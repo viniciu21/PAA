@@ -20,30 +20,66 @@ struct Rectangle {
 struct Bin {
     float width;
     float height;
-    vector<pair<Point, Point>> cuts;
+    vector<Point> available_points;
 };
+
+vector<Rectangle> rectangles;
+vector<Bin> bins;
+float bin_dimension;
 
 Bin createSquareBin(float dim) {
     Bin bin;
     bin.width = dim;
     bin.height = dim;
+    Point initial_available_point;
+    initial_available_point.x = 0;
+    initial_available_point.y = 0;
+    bin.available_points.push_back(initial_available_point);
     return bin;
 }
 
-int find_bin_fits(Rectangle rectangle){
-    return -1; // STUB
-}
+void insert_first_bin_fits_rectangle(Rectangle rectangle){
+    for (int i = 0; i < bins.size(); ++i) {
+        auto bin = bins[i];
+        for (auto point : bin.available_points) {
+            float required_width = point.x + rectangle.width;
+            float required_height = point.y + rectangle.height;
 
-void insertRectangleOnBinIndex(Rectangle rectangle, int i_bin){
-    // STUB
+            Point extreme_point_rectangle;
+            extreme_point_rectangle.x = required_width;
+            extreme_point_rectangle.y = required_height;
+
+            bool is_outside_bin = required_width > bin.width || required_height > bin.height; 
+            
+            if (is_outside_bin)
+                continue;
+
+            bool is_there_instersection = false;
+            // Checking for intersection of rectangles
+            for (auto other_point : bin.available_points) {
+                if (other_point.x <= point.x)
+                    continue;
+                    
+                if (other_point.x < extreme_point_rectangle.x) {
+                    is_there_instersection = true;
+                    break;
+                }
+            }
+
+            if (is_there_instersection)
+                continue;
+            
+            // TODO: add new available points and remove others
+            return;
+        }
+    }
+
+    // TODO: no bin fits, then create a new one with 3 available points...
 }
 
 int main() {
     int qnt_rectangles;
     cin >> qnt_rectangles;
-
-    vector<Rectangle> rectangles;
-    vector<Bin> bins;
 
     for(int i = 0; i < qnt_rectangles; ++i){
         float width, height;
@@ -69,7 +105,7 @@ int main() {
 
     // And then was bin...
     
-    float bin_dimension = max(rectangles_by_width[0].width, rectangles_by_height[0].height);
+    bin_dimension = max(rectangles_by_width[0].width, rectangles_by_height[0].height);
     Bin bin = createSquareBin(bin_dimension);
     bins.push_back(bin);
 
@@ -93,12 +129,7 @@ int main() {
 
         cout << rectangle.width << ' ' << rectangle.height << endl;
 
-        int i_bin = find_bin_fits(rectangle);
-        if (i_bin == -1) {
-            auto bin = createSquareBin(bin_dimension);
-            bins.push_back(bin);
-        }
-        insertRectangleOnBinIndex(rectangle, bins.size() - 1);
+        insert_first_bin_fits_rectangle(rectangle);
         put_widther != put_widther; // alternate by width/height rects
     }
     
