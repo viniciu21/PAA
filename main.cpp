@@ -1,4 +1,4 @@
-// #include<bits/stdc++.h>
+#include <bits/stdc++.h>
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
@@ -212,6 +212,33 @@ void show_result(vector<Bin> bins) {
     
 }
 
+void output_to_draw_grapher(vector<Bin> bins) {
+    int bin_size_factor = 25;
+    int bin_draw_size = bin_size_factor * MAX_RECT_DIMENSION_SIZE;
+    int bin_margin = 5;
+    for (int i = 0; i < bins.size(); ++i) {
+        int points_bin_margin = bin_margin * i;
+        int top_left_x = i * bin_draw_size + points_bin_margin;
+        int top_left_y = 0;
+        int bottom_right_x = (i + 1) * bin_draw_size + points_bin_margin;
+        int bottom_right_y = bin_draw_size;
+        cout << 'r'<< top_left_x << ',' << top_left_y << ',' << bottom_right_x << ',' << bottom_right_y << ',';
+        auto rectangles = bins[i].rect_inside;
+        for (int j = 0; j < rectangles.size(); ++j){
+            auto rect_top_left_x = rectangles[j].staring_point;
+            auto rect_top_left_y = 0;
+            auto rect_bottom_right_x = rectangles[j].ending_point;
+            auto rect_bottom_right_y = rectangles[j].height;
+            int rounded_top_left_x = rect_top_left_x * bin_size_factor + top_left_x;
+            int rounded_top_left_y = rect_top_left_y * bin_size_factor;
+            int rounded_bottom_right_x = rect_bottom_right_x * bin_size_factor + top_left_x;
+            int rounded_bottom_right_y = rect_bottom_right_y * bin_size_factor;
+            cout << "r"<< rounded_top_left_x << ',' << rounded_top_left_y << ',' << rounded_bottom_right_x << ',' << rounded_bottom_right_y << ',';
+        }
+    }
+    cout<<'\n';
+}
+
 int main(){
     int instance_number = 1;
 
@@ -236,5 +263,6 @@ int main(){
     textfile.close();
 
     //show_result(bins_created);
-    //   draw_rect(rectangles.at(0).width * 10, rectangles.at(0).height * 10);
+    //draw_rect(rectangles.at(0).width * 10, rectangles.at(0).height * 10);
+    //output_to_draw_grapher(bins_created);
 }
