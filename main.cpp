@@ -1,82 +1,240 @@
-//#include<bits/stdc++.h>
+// #include<bits/stdc++.h>
 #include <stdio.h>
 #include <iostream>
+#include <fstream>
+
 using namespace std;
 
 #define MAX_RECT_DIMENSION_SIZE 1
 #define MIN_RECT_DIMENSION_SIZE 0
-#define rect pair<float, float>
-#define vect vector<rect> 
-string FOLDER_PATH_BASE = "JSON\";
 
-int main() {
+#define vect vector<Rectangle>
 
-    int instance_number = 1; 
+string FOLDER_PATH_BASE = "JSON_";
 
-    cout << "Digite o numero da instancia que quer testar \n";
-    cout << "Lembrando que temos 499 (0 a 500) instancias\n";
+struct Rectangle
+{
+    float width;
+    float height;
+    float staring_point; 
+    float ending_point;
+    int id;
+};
 
-    cin >> instance_number;
+struct Bin
+{
+    float width;
+    float height;
+    float current_width_fited;
+    float current_height_fited;
+    float current_width_empty;
+    int id;
+    vect rect_inside;
+};
 
-    while (instance_number == 0 || instance_number > 500) {
-        cout << "Numero de instancia invalido, Digite normalmente\n";
-        cin >> instance_number;
+void draw_rect(int width, int height)
+{
+    using std::cout;
+    cout << "+";
+    for (int i = 0; i < width - 2; i++)
+    {
+        cout << "-";
+    }
+    cout << "+\n";
+
+    for (int i = 0; i < height - 2; i++)
+    {
+        cout << "|";
+        for (int j = 0; j < width - 2; j++)
+        {
+            cout << " ";
+        }
+        cout << "|\n";
     }
 
+    cout << "+";
+    for (int i = 0; i < width - 2; i++)
+    {
+        cout << "-";
+    }
+    cout << "+\n";
+}
 
+Bin createSquareBin(int &bin_count){
+
+    Bin bin;
+    bin.width = MAX_RECT_DIMENSION_SIZE;
+    bin.height = MAX_RECT_DIMENSION_SIZE;
+    bin.current_width_fited = MAX_RECT_DIMENSION_SIZE;
+    bin.current_height_fited = MAX_RECT_DIMENSION_SIZE;
+    bin.current_width_empty = 0;
+    bin.id = ++bin_count;
+    return bin;
+}
+
+vect load_rects(int instance_number)
+{
+    int number_rect = 0;
+    float width_rect = 0;
+    float height_rect = 0;
+    int i;
+
+    vect rectangles;
+
+    string file_chosed_path = "./Instances/cleaned/" + FOLDER_PATH_BASE + to_string(instance_number) + ".txt";
+    fstream file_chosen;
+
+    file_chosen.open(file_chosed_path);
+
+    file_chosen >> number_rect;
+
+    for (i = 0; i < number_rect; i++)
+    {
+        file_chosen >> width_rect >> height_rect;
+
+        Rectangle rectangle;
+        rectangle.width = width_rect;
+        rectangle.height = height_rect;
+        rectangle.id = i + 1;
+        rectangles.push_back(rectangle);
+    }
+
+    return rectangles;
+}
+
+vect load_rects()
+{
+    int number_rect = 0;
+    float width_rect = 0;
+    float height_rect = 0;
+    int i;
+
+    vect rectangles;
+
+    cin >> number_rect;
+
+    for (i = 0; i < number_rect; i++)
+    {
+        cin >> width_rect >> height_rect;
+
+        Rectangle rectangle;
+        rectangle.width = width_rect;
+        rectangle.height = height_rect;
+        rectangle.id = i + 1;
+        rectangles.push_back(rectangle);
+    }
+
+    return rectangles;
+}
+
+void printRectangle(Rectangle rectangle)
+{
+    cout << "width: " + to_string(rectangle.width)
+         << " height: " + to_string(rectangle.height) 
+         << " Starting point " + to_string(rectangle.staring_point) 
+         << " Ending point " + to_string(rectangle.ending_point)
+         << endl;
+}
+
+void printRetangles(vect rectangles)
+{
+    for (auto rectangle : rectangles)
+    {
+       printRectangle(rectangle);
+    }
 }
 
 
-void teste() {
+bool compareByHeight(const Rectangle &a, const Rectangle &b)
+{
+    return a.height > b.height;
+}
 
-    // int qnt_rectangles;
-    // cin >> qnt_rectangles;
+bool add_rect_into_bin(Rectangle &rect, vector<Bin> &bins)
+{
 
-    // vect rectangles;
-    // vect bins;
+    for (auto &&bin : bins){
 
-    // for(int i = 0; i < qnt_rectangles; ++i){
-    //     float width, height;
-    //     cin >> width >> height;
-    //     rect rectangle = { width, height };
-    //     rectangles.push_back(rectangle);
-    // }
+        float offsetW = bin.current_width_fited - rect.width;
+        float offsetH = bin.current_height_fited - rect.height;
+        float emptySpaceWidthBin = bin.current_width_empty + rect.width;
+        if (offsetW >= 0){
 
-    // vect rectangles_by_width(rectangles);
-    // // Order by first element (width) non-cresc
-    // sort(rectangles_by_width.begin(), rectangles_by_width.end(), [](const auto& left, const auto& right) {
-    //     return left.first > right.first;
-    // });
+            cout << "Retangulo entrou na bin " + to_string(bin.id) << " ";
+            rect.staring_point = bin.current_width_empty;
+            rect.ending_point = bin.current_width_empty + rect.width;
+            printRectangle(rect);
 
-    // vect rectangles_by_height(rectangles);
-    // // Order by second element (height) non-cresc
-    // sort(rectangles_by_height.begin(), rectangles_by_height.end(), [](const auto& left, const auto& right) {
-    //     return left.second > right.second;
-    // });
+            bin.current_width_fited = offsetW;
+            bin.current_width_empty = emptySpaceWidthBin;
 
-    // // And then was bin...
+            cout << "atualizando comprimento para " + to_string(bin.current_width_fited) << endl;
+
+            bin.rect_inside.push_back(rect);
+            return true;
+        } else {
+
+        }
+    }
+
+    return false;
+}
+
+vector<Bin> fit_into_bins(vect rectangles)
+{
+    vector<Bin> bins;
+    int bin_count = 0;
+    bins.push_back(createSquareBin(bin_count));
+    vect rectangles_by_height(rectangles);
+    // Order by second element (height) non-cresc
+    sort(rectangles_by_height.begin(), rectangles_by_height.end(), compareByHeight);
+
+    for (auto rectangle : rectangles_by_height)
+    {
+        if (!add_rect_into_bin(rectangle, bins))
+        {
+            cout << "Não conseguiu colocar na bin" << endl;
+            cout << "Criando uma nova bin " << endl;
+
+            bins.push_back(createSquareBin(bin_count));
+        }
+    }
+    return bins;
+}
+
+void show_result(vector<Bin> bins) {
+    for (auto &&bin : bins){
+        cout << "Bin de id " << bin.id << " criada com os seguintes retangulos: " << endl;
+        printRetangles(bin.rect_inside);
+
+        cout << "\n \n" << endl;
+    }
     
-    // //        ____
-    // //  ______|H |
-    // //  |  W  |  |
-    // //  ⁻⁻⁻⁻⁻⁻⁻⁻⁻⁻
-    // if (rectangles_by_width[0].second + rectangles_by_height[0].second <= MAX_RECT_DIMENSION_SIZE) {
-    //     bins.emplace_back(rectangles_by_width[0].second + rectangles_by_height[0].second, rectangles_by_height[0].first);
-    // }
-    // //  ___
-    // //  |H |    
-    // //  |__|____
-    // //  |  W   |
-    // //  ⁻⁻⁻⁻⁻⁻⁻⁻
-    // else if (rectangles_by_width[0].first + rectangles_by_height[0].first <= MAX_RECT_DIMENSION_SIZE) {
-    //     bins.emplace_back(rectangles_by_width[0].second + rectangles_by_height[0].second, rectangles_by_height[0].first);
-    // }
-    // // Need two bins...
-    // else {
-    //     rect bin = {rectangles_by_width[0].first, rectangles_by_height[0].first};
-    //     bins.emplace_back(bin);
-    //     bins.emplace_back(bin);
-    // }    
+}
 
-    // cout << bins.size() << '\n';
+int main(){
+    int instance_number = 1;
+
+    // cout << "Digite o numero da instancia que quer testar \n";
+    // cout << "Lembrando que temos 499 (0 a 500) instancias\n";
+
+    //cin >> instance_number;
+
+    // while (instance_number == 0 || instance_number > 500)
+    // {
+    //     cout << "Numero de instancia invalido, Digite normalmente\n";
+    //     cin >> instance_number;
+    // }
+
+    //vect rectangles = load_rects(instance_number);
+    vect rectangles = load_rects();
+    printRetangles(rectangles);
+    vector<Bin> bins_created = fit_into_bins(rectangles);
+
+    ofstream textfile("numberofbins.txt", ios::app);
+    textfile << to_string(bins_created.size()) << ",";
+    textfile.close();
+
+    //show_result(bins_created);
+    //   draw_rect(rectangles.at(0).width * 10, rectangles.at(0).height * 10);
 }
