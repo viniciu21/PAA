@@ -41,16 +41,28 @@ Bin createSquareBin(float dim) {
     return bin;
 }
 
+void remove_point(vector<Point> & points, const Point & point_to_remove) {
+    points.erase(
+        remove_if(points.begin(), points.end(), [&](Point const & point) {
+            return point.x == point_to_remove.x && point.y == point_to_remove.y;
+        }),
+        points.end()
+    );
+}
+
 void insert_first_bin_fits_rectangle(Rectangle rectangle){
+    cout << "Inserting rectangle " << rectangle.width << ' ' << rectangle.height << endl;
+
     for (int i = 0; i < bins.size(); ++i) {
-        auto bin = bins[i];
+        auto & bin = bins[i];
+        cout << "Trying on Bin " << (i + 1) << " (" << bin.width << ", " << bin.height << ")\n";
+        cout << "Availables " << bin.available_points.size() << endl;
         for (auto point : bin.available_points) {
+            cout << "Available point " << ' ' << point.x << ' ' << point.y << "?\n";
             float required_width = point.x + rectangle.width;
             float required_height = point.y + rectangle.height;
 
-            Point extreme_point_rectangle;
-            extreme_point_rectangle.x = required_width;
-            extreme_point_rectangle.y = required_height;
+            Point top_right(required_width, required_height);
 
             bool is_outside_bin = required_width > bin.width || required_height > bin.height; 
             
@@ -63,21 +75,42 @@ void insert_first_bin_fits_rectangle(Rectangle rectangle){
                 if (other_point.x <= point.x)
                     continue;
                     
-                if (other_point.x < extreme_point_rectangle.x) {
+                if (other_point.x < top_right.x) {
                     is_there_instersection = true;
                     break;
                 }
             }
 
-            if (is_there_instersection)
+            if (is_there_instersection) {
+                cout << "Has intersection :(\n";
                 continue;
+            }
             
-            // TODO: add new available points and remove others
+            // placing rectangle new available points
+            Point top_left(point.x, required_height);
+            Point bottom_right(required_width, point.y);
+            bin.available_points.push_back(top_left);
+            bin.available_points.push_back(top_right);
+            bin.available_points.push_back(bottom_right);
+
+            remove_point(bin.available_points, point);
+            cout << "Yep! New available points.\n";
             return;
         }
     }
 
+    cout << "Need to create a new bin...\n";
     // TODO: no bin fits, then create a new one with 3 available points...
+    auto bin = createSquareBin(bin_dimension);
+    Point initial_point(0, 0);
+    Point top_left(0, rectangle.height);
+    Point top_right(rectangle.width, rectangle.height);
+    Point bottom_right(rectangle.width, 0);
+    bin.available_points.push_back(top_left);
+    bin.available_points.push_back(top_right);
+    bin.available_points.push_back(bottom_right);
+    remove_point(bin.available_points, initial_point);
+    bins.push_back(bin);
 }
 
 int main() {
@@ -129,8 +162,6 @@ int main() {
             continue;
 
         id_rectangle_was_inserted[rectangle.id] = true;
-
-        cout << rectangle.width << ' ' << rectangle.height << endl;
 
         insert_first_bin_fits_rectangle(rectangle);
         put_widther != put_widther; // alternate by width/height rects
