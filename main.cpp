@@ -113,6 +113,18 @@ void insert_first_bin_fits_rectangle(Rectangle rectangle){
     bins.push_back(bin);
 }
 
+void output_to_draw_grapher() {
+    int bin_size_factor = 100;
+    int bin_draw_size = 100 * bin_dimension;
+    for (int i = 0; i < bins.size(); ++i) {
+        Point top_left(i * bin_draw_size, 0);
+        Point bottom_right((i + 1) * bin_draw_size, bin_draw_size);
+        cout << 'r'<< top_left.x << ',' << top_left.y << ',' << bottom_right.x << ',' << bottom_right.y << ',';
+        // TODO: rectangles inside...? available points are unsufficient
+    }
+    cout<<'\n';
+}
+
 int main() {
     int qnt_rectangles;
     cin >> qnt_rectangles;
@@ -168,4 +180,5 @@ int main() {
     }
     
     cout << bins.size() << endl;
+    output_to_draw_grapher();
 }
