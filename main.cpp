@@ -172,8 +172,6 @@ bool add_rect_into_bin(Rectangle &rect, vector<Bin> &bins)
 
             bin.rect_inside.push_back(rect);
             return true;
-        } else {
-
         }
     }
 
