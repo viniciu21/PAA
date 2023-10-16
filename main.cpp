@@ -51,6 +51,23 @@ void remove_point(vector<Point> & points, const Point & point_to_remove) {
     );
 }
 
+bool rectangles_has_intersection(const pair<Point, Point> & a,const pair<Point, Point> & b) {
+    auto bottom_left_a = a.first;
+    auto top_right_a = a.second;
+    auto bottom_left_b = b.first;
+    auto top_right_b = b.second;
+
+    if (
+        bottom_left_a.x >= top_right_b.x ||
+        bottom_left_a.y >= top_right_b.y ||
+        top_right_a.x <= bottom_left_b.x ||
+        top_right_a.y <= bottom_left_b.y
+    )
+        return false;
+    
+    return true;
+}
+
 void insert_first_bin_fits_rectangle(Rectangle rectangle){
     // cout << "Inserting rectangle " << rectangle.width << ' ' << rectangle.height << endl;
 
@@ -64,6 +81,8 @@ void insert_first_bin_fits_rectangle(Rectangle rectangle){
             float required_height = point.y + rectangle.height;
 
             Point top_right(required_width, required_height);
+            Point top_left(point.x, required_height);
+            Point bottom_right(required_width, point.y);
 
             bool is_outside_bin = required_width > bin.width || required_height > bin.height; 
             
@@ -72,11 +91,8 @@ void insert_first_bin_fits_rectangle(Rectangle rectangle){
 
             bool is_there_instersection = false;
             // Checking for intersection of rectangles
-            for (auto other_point : bin.available_points) {
-                if (other_point.x <= point.x)
-                    continue;
-                    
-                if (other_point.x < top_right.x) {
+            for (auto rect_pair : bin.rectangles) {
+                if (rectangles_has_intersection({point, top_right}, rect_pair)){
                     is_there_instersection = true;
                     break;
                 }
@@ -89,11 +105,9 @@ void insert_first_bin_fits_rectangle(Rectangle rectangle){
 
             bin.rectangles.emplace_back(point, top_right);
             // placing rectangle new available points
-            Point top_left(point.x, required_height);
-            Point bottom_right(required_width, point.y);
             bin.available_points.push_back(top_left);
-            bin.available_points.push_back(top_right);
             bin.available_points.push_back(bottom_right);
+            bin.available_points.push_back(top_right);
 
             remove_point(bin.available_points, point);
             // cout << "Yep! New available points.\n";
@@ -106,8 +120,8 @@ void insert_first_bin_fits_rectangle(Rectangle rectangle){
     auto bin = createSquareBin(bin_dimension);
     Point initial_point(0, 0);
     Point top_left(0, rectangle.height);
-    Point top_right(rectangle.width, rectangle.height);
     Point bottom_right(rectangle.width, 0);
+    Point top_right(rectangle.width, rectangle.height);
     bin.available_points.push_back(top_left);
     bin.available_points.push_back(top_right);
     bin.available_points.push_back(bottom_right);
@@ -117,9 +131,9 @@ void insert_first_bin_fits_rectangle(Rectangle rectangle){
 }
 
 void output_to_draw_grapher() {
-    cout << "Output grapher:\n";
+    // cout << "Output grapher:\n";
     int bin_size_factor = 100;
-    int bin_draw_size = 100 * bin_dimension;
+    int bin_draw_size = bin_size_factor * bin_dimension;
     int bin_margin = 5;
     for (int i = 0; i < bins.size(); ++i) {
         int points_bin_margin = bin_margin * i;
