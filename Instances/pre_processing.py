@@ -10,7 +10,8 @@ for file_name in folder:
     file = open(base_path + "/" + file_name)
     json_file = json.load(file)
     file.close()
-    file_txt = open("./instances/cleaned/" + file_name.split('.')[0]+ ".txt", 'w')
+    file_name_cleaned = "./instances/cleaned/" + file_name.replace("\\", "_").split('.')[0]+ ".txt"
+    file_txt = open(file_name_cleaned, 'w')
     
     object_maximuns = json_file["Objects"][0]
     print(object_maximuns)
