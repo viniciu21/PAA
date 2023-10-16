@@ -120,9 +120,11 @@ void output_to_draw_grapher() {
     cout << "Output grapher:\n";
     int bin_size_factor = 100;
     int bin_draw_size = 100 * bin_dimension;
+    int bin_margin = 5;
     for (int i = 0; i < bins.size(); ++i) {
-        Point top_left(i * bin_draw_size, 0);
-        Point bottom_right((i + 1) * bin_draw_size, bin_draw_size);
+        int points_bin_margin = bin_margin * i;
+        Point top_left(i * bin_draw_size + points_bin_margin, 0);
+        Point bottom_right((i + 1) * bin_draw_size + points_bin_margin, bin_draw_size);
         cout << 'r'<< top_left.x << ',' << top_left.y << ',' << bottom_right.x << ',' << bottom_right.y << ',';
         auto rectangles = bins[i].rectangles;
         for (int j = 0; j < rectangles.size(); ++j){
