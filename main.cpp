@@ -112,6 +112,7 @@ void insert_first_bin_fits_rectangle(Rectangle rectangle){
     bin.available_points.push_back(top_right);
     bin.available_points.push_back(bottom_right);
     remove_point(bin.available_points, initial_point);
+    bin.rectangles.emplace_back(initial_point, top_right);
     bins.push_back(bin);
 }
 
@@ -131,7 +132,7 @@ void output_to_draw_grapher() {
             int rounded_top_left_y = rect_top_left.y * bin_size_factor;
             int rounded_bottom_right_x = rect_bottom_right.x * bin_size_factor + top_left.x;
             int rounded_bottom_right_y = rect_bottom_right.y * bin_size_factor;
-            cout << "rect"<< rounded_top_left_x << ',' << rounded_top_left_y << ',' << rounded_bottom_right_x << ',' << rounded_bottom_right_y << ',';
+            cout << "r"<< rounded_top_left_x << ',' << rounded_top_left_y << ',' << rounded_bottom_right_x << ',' << rounded_bottom_right_y << ',';
         }
     }
     cout<<'\n';
@@ -181,6 +182,8 @@ int main() {
             rectangle = rectangles_by_height[i_heights];
             ++i_heights;
         }
+
+        cout << "Rectangle: " << rectangle.width << ' ' << rectangle.height << endl;
 
         if(id_rectangle_was_inserted[rectangle.id])
             continue;
