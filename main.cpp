@@ -7,8 +7,11 @@ using namespace std;
 #define vect vector<rect> 
 
 struct Point {
-    float x;
-    float y;
+    float x, y;
+    Point(){
+        x, y = 0.0;
+    }
+    Point(float x1, float y1) : x(x1), y(y1) {}
 };
 
 struct Rectangle {
