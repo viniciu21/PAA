@@ -52,14 +52,14 @@ void remove_point(vector<Point> & points, const Point & point_to_remove) {
 }
 
 void insert_first_bin_fits_rectangle(Rectangle rectangle){
-    cout << "Inserting rectangle " << rectangle.width << ' ' << rectangle.height << endl;
+    // cout << "Inserting rectangle " << rectangle.width << ' ' << rectangle.height << endl;
 
     for (int i = 0; i < bins.size(); ++i) {
         auto & bin = bins[i];
-        cout << "Trying on Bin " << (i + 1) << " (" << bin.width << ", " << bin.height << ")\n";
-        cout << "Availables " << bin.available_points.size() << endl;
+        // cout << "Trying on Bin " << (i + 1) << " (" << bin.width << ", " << bin.height << ")\n";
+        // cout << "Availables " << bin.available_points.size() << endl;
         for (auto point : bin.available_points) {
-            cout << "Available point " << ' ' << point.x << ' ' << point.y << "?\n";
+            // cout << "Available point " << ' ' << point.x << ' ' << point.y << "?\n";
             float required_width = point.x + rectangle.width;
             float required_height = point.y + rectangle.height;
 
@@ -83,7 +83,7 @@ void insert_first_bin_fits_rectangle(Rectangle rectangle){
             }
 
             if (is_there_instersection) {
-                cout << "Has intersection :(\n";
+                // cout << "Has intersection :(\n";
                 continue;
             }
 
@@ -96,12 +96,12 @@ void insert_first_bin_fits_rectangle(Rectangle rectangle){
             bin.available_points.push_back(bottom_right);
 
             remove_point(bin.available_points, point);
-            cout << "Yep! New available points.\n";
+            // cout << "Yep! New available points.\n";
             return;
         }
     }
 
-    cout << "Need to create a new bin...\n";
+    // cout << "Need to create a new bin...\n";
     // TODO: no bin fits, then create a new one with 3 available points...
     auto bin = createSquareBin(bin_dimension);
     Point initial_point(0, 0);
@@ -117,13 +117,13 @@ void insert_first_bin_fits_rectangle(Rectangle rectangle){
 }
 
 void output_to_draw_grapher() {
+    cout << "Output grapher:\n";
     int bin_size_factor = 100;
     int bin_draw_size = 100 * bin_dimension;
     for (int i = 0; i < bins.size(); ++i) {
         Point top_left(i * bin_draw_size, 0);
         Point bottom_right((i + 1) * bin_draw_size, bin_draw_size);
         cout << 'r'<< top_left.x << ',' << top_left.y << ',' << bottom_right.x << ',' << bottom_right.y << ',';
-        // TODO: rectangles inside...? available points are unsufficient
         auto rectangles = bins[i].rectangles;
         for (int j = 0; j < rectangles.size(); ++j){
             auto rect_top_left = rectangles[j].first;
@@ -183,7 +183,7 @@ int main() {
             ++i_heights;
         }
 
-        cout << "Rectangle: " << rectangle.width << ' ' << rectangle.height << endl;
+        // cout << "Rectangle: " << rectangle.width << ' ' << rectangle.height << endl;
 
         if(id_rectangle_was_inserted[rectangle.id])
             continue;
@@ -198,9 +198,8 @@ int main() {
     for (auto bin : bins) {
         qnt_rectangles_inserted += bin.rectangles.size();
     }
-    cout << "------------------------------\n";
-    cout << "Rectangles inserted: " << qnt_rectangles_inserted << endl;
-    cout << "Qnt. bins: " << bins.size() << endl;
-    cout << "Output grapher:\n";
-    output_to_draw_grapher();
+    // cout << "------------------------------\n";
+    // cout << "Rectangles inserted: " << qnt_rectangles_inserted << endl;
+    // output_to_draw_grapher();
+    cout << bins.size() << endl;
 }
