@@ -24,6 +24,7 @@ struct Bin {
     float width;
     float height;
     vector<Point> available_points;
+    vector<pair<Point, Point>> rectangles;
 };
 
 vector<Rectangle> rectangles;
@@ -85,7 +86,8 @@ void insert_first_bin_fits_rectangle(Rectangle rectangle){
                 cout << "Has intersection :(\n";
                 continue;
             }
-            
+
+            bin.rectangles.emplace_back(point, top_right);
             // placing rectangle new available points
             Point top_left(point.x, required_height);
             Point bottom_right(required_width, point.y);
@@ -121,6 +123,16 @@ void output_to_draw_grapher() {
         Point bottom_right((i + 1) * bin_draw_size, bin_draw_size);
         cout << 'r'<< top_left.x << ',' << top_left.y << ',' << bottom_right.x << ',' << bottom_right.y << ',';
         // TODO: rectangles inside...? available points are unsufficient
+        auto rectangles = bins[i].rectangles;
+        for (int j = 0; j < rectangles.size(); ++j){
+            auto rect_top_left = rectangles[j].first;
+            auto rect_bottom_right = rectangles[j].second;
+            int rounded_top_left_x = rect_top_left.x * bin_size_factor + top_left.x;
+            int rounded_top_left_y = rect_top_left.y * bin_size_factor;
+            int rounded_bottom_right_x = rect_bottom_right.x * bin_size_factor + top_left.x;
+            int rounded_bottom_right_y = rect_bottom_right.y * bin_size_factor;
+            cout << "rect"<< rounded_top_left_x << ',' << rounded_top_left_y << ',' << rounded_bottom_right_x << ',' << rounded_bottom_right_y << ',';
+        }
     }
     cout<<'\n';
 }
@@ -179,6 +191,13 @@ int main() {
         put_widther != put_widther; // alternate by width/height rects
     }
     
-    cout << bins.size() << endl;
+    int qnt_rectangles_inserted = 0;
+    for (auto bin : bins) {
+        qnt_rectangles_inserted += bin.rectangles.size();
+    }
+    cout << "------------------------------\n";
+    cout << "Rectangles inserted: " << qnt_rectangles_inserted << endl;
+    cout << "Qnt. bins: " << bins.size() << endl;
+    cout << "Output grapher:\n";
     output_to_draw_grapher();
 }
