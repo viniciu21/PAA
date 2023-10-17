@@ -4,6 +4,7 @@
 #include <fstream>
 
 using namespace std;
+using namespace std::chrono;
 
 #define MAX_RECT_DIMENSION_SIZE 1
 #define MIN_RECT_DIMENSION_SIZE 0
@@ -164,11 +165,11 @@ bool add_rect_into_bin(Rectangle &rect, vector<Bin> &bins)
             bin.current_height_fited = rect.height;
         } else if (requiredH <= MAX_RECT_DIMENSION_SIZE) {
             
-            cout << "Retangulo entrou na bin (por caber por cima)" + to_string(bin.id) << " ";
+            // cout << "Retangulo entrou na bin (por caber por cima)" + to_string(bin.id) << " ";
             rect.staring_point = 0;
             rect.ending_point = rect.width;
             rect.starting_point_height = bin.current_height_fited;
-            printRectangle(rect);
+            // printRectangle(rect);
 
             bin.current_height_fited = requiredH;
             bin.rect_inside.push_back(rect);
@@ -178,16 +179,16 @@ bool add_rect_into_bin(Rectangle &rect, vector<Bin> &bins)
 
         if (offsetW >= 0){
 
-            cout << "Retangulo entrou na bin (por caber de lado)" + to_string(bin.id) << " ";
+            // cout << "Retangulo entrou na bin (por caber de lado)" + to_string(bin.id) << " ";
             rect.staring_point = bin.current_width_empty;
             rect.ending_point = bin.current_width_empty + rect.width;
             rect.starting_point_height = 0;
-            printRectangle(rect);
+            // printRectangle(rect);
 
             bin.current_width_fited = offsetW;
             bin.current_width_empty = emptySpaceWidthBin;
 
-            cout << "atualizando comprimento para " + to_string(bin.current_width_fited) << endl;
+            // cout << "atualizando comprimento para " + to_string(bin.current_width_fited) << endl;
 
             bin.rect_inside.push_back(rect);
             return true;
@@ -210,8 +211,8 @@ vector<Bin> fit_into_bins(vect rectangles)
     {
         if (!add_rect_into_bin(rectangle, bins))
         {
-            cout << "Não conseguiu colocar na bin" << endl;
-            cout << "Criando uma nova bin " << endl;
+            // cout << "Não conseguiu colocar na bin" << endl;
+            // cout << "Criando uma nova bin " << endl;
 
             bins.push_back(createSquareBin(bin_count));
             add_rect_into_bin(rectangle, bins);
@@ -271,16 +272,23 @@ int main(){
         cin >> instance_number;
     }
 
+    auto start = high_resolution_clock::now();
+
     vect rectangles = load_rects(instance_number);
     //vect rectangles = load_rects();
     vector<Bin> bins_created = fit_into_bins(rectangles);
     // printRetangles(rectangles);
 
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+
     ofstream textfile("numberofbins.txt", ios::app);
     textfile << to_string(bins_created.size()) << ",";
     textfile.close();
 
-    show_result(bins_created);
+    // show_result(bins_created);
     //draw_rect(rectangles.at(0).width * 10, rectangles.at(0).height * 10);
     //output_to_draw_grapher(bins_created);
+    cout << "Quantidade de bins criadas: " << bins_created.size() << endl;
+    cout << "Tempo de execução: " << duration.count() << " ms \n";
 }
