@@ -195,6 +195,7 @@ vector<Bin> fit_into_bins(vect rectangles)
             cout << "Criando uma nova bin " << endl;
 
             bins.push_back(createSquareBin(bin_count));
+            add_rect_into_bin(rectangle, bins);
         }
     }
     return bins;
@@ -253,8 +254,8 @@ int main(){
 
     //vect rectangles = load_rects(instance_number);
     vect rectangles = load_rects();
-    printRetangles(rectangles);
     vector<Bin> bins_created = fit_into_bins(rectangles);
+    // printRetangles(rectangles);
 
     ofstream textfile("numberofbins.txt", ios::app);
     textfile << to_string(bins_created.size()) << ",";
