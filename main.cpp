@@ -260,19 +260,19 @@ void output_to_draw_grapher(vector<Bin> bins) {
 int main(){
     int instance_number = 1;
 
-    // cout << "Digite o numero da instancia que quer testar \n";
-    // cout << "Lembrando que temos 499 (0 a 500) instancias\n";
+    cout << "Digite o numero da instancia que quer testar \n";
+    cout << "Lembrando que temos 499 (0 a 500) instancias\n";
 
-    //cin >> instance_number;
+    cin >> instance_number;
 
-    // while (instance_number == 0 || instance_number > 500)
-    // {
-    //     cout << "Numero de instancia invalido, Digite normalmente\n";
-    //     cin >> instance_number;
-    // }
+    while (instance_number == 0 || instance_number > 500)
+    {
+        cout << "Numero de instancia invalido, Digite normalmente\n";
+        cin >> instance_number;
+    }
 
-    //vect rectangles = load_rects(instance_number);
-    vect rectangles = load_rects();
+    vect rectangles = load_rects(instance_number);
+    //vect rectangles = load_rects();
     vector<Bin> bins_created = fit_into_bins(rectangles);
     // printRetangles(rectangles);
 
@@ -280,7 +280,7 @@ int main(){
     textfile << to_string(bins_created.size()) << ",";
     textfile.close();
 
-    //show_result(bins_created);
+    show_result(bins_created);
     //draw_rect(rectangles.at(0).width * 10, rectangles.at(0).height * 10);
     //output_to_draw_grapher(bins_created);
 }
