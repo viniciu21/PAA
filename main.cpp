@@ -18,6 +18,7 @@ struct Rectangle
     float height;
     float staring_point; 
     float ending_point;
+    float starting_point_height;
     int id;
 };
 
@@ -66,7 +67,7 @@ Bin createSquareBin(int &bin_count){
     bin.width = MAX_RECT_DIMENSION_SIZE;
     bin.height = MAX_RECT_DIMENSION_SIZE;
     bin.current_width_fited = MAX_RECT_DIMENSION_SIZE;
-    bin.current_height_fited = MAX_RECT_DIMENSION_SIZE;
+    bin.current_height_fited = MIN_RECT_DIMENSION_SIZE;
     bin.current_width_empty = 0;
     bin.id = ++bin_count;
     return bin;
@@ -156,13 +157,31 @@ bool add_rect_into_bin(Rectangle &rect, vector<Bin> &bins)
     for (auto &&bin : bins){
 
         float offsetW = bin.current_width_fited - rect.width;
-        float offsetH = bin.current_height_fited - rect.height;
+        float requiredH = bin.current_height_fited + rect.height;
         float emptySpaceWidthBin = bin.current_width_empty + rect.width;
+        
+        if (bin.current_height_fited == 0) {
+            bin.current_height_fited = rect.height;
+        } else if (requiredH <= MAX_RECT_DIMENSION_SIZE) {
+            
+            cout << "Retangulo entrou na bin (por caber por cima)" + to_string(bin.id) << " ";
+            rect.staring_point = 0;
+            rect.ending_point = rect.width;
+            rect.starting_point_height = bin.current_height_fited;
+            printRectangle(rect);
+
+            bin.current_height_fited = requiredH;
+            bin.rect_inside.push_back(rect);
+
+            return true;
+        }
+
         if (offsetW >= 0){
 
-            cout << "Retangulo entrou na bin " + to_string(bin.id) << " ";
+            cout << "Retangulo entrou na bin (por caber de lado)" + to_string(bin.id) << " ";
             rect.staring_point = bin.current_width_empty;
             rect.ending_point = bin.current_width_empty + rect.width;
+            rect.starting_point_height = 0;
             printRectangle(rect);
 
             bin.current_width_fited = offsetW;
@@ -212,7 +231,7 @@ void show_result(vector<Bin> bins) {
 }
 
 void output_to_draw_grapher(vector<Bin> bins) {
-    int bin_size_factor = 25;
+    int bin_size_factor = 20;
     int bin_draw_size = bin_size_factor * MAX_RECT_DIMENSION_SIZE;
     int bin_margin = 5;
     for (int i = 0; i < bins.size(); ++i) {
@@ -225,9 +244,9 @@ void output_to_draw_grapher(vector<Bin> bins) {
         auto rectangles = bins[i].rect_inside;
         for (int j = 0; j < rectangles.size(); ++j){
             auto rect_top_left_x = rectangles[j].staring_point;
-            auto rect_top_left_y = 0;
+            auto rect_top_left_y = rectangles[j].starting_point_height;
             auto rect_bottom_right_x = rectangles[j].ending_point;
-            auto rect_bottom_right_y = rectangles[j].height;
+            auto rect_bottom_right_y = rect_top_left_y + rectangles[j].height;
             int rounded_top_left_x = rect_top_left_x * bin_size_factor + top_left_x;
             int rounded_top_left_y = rect_top_left_y * bin_size_factor;
             int rounded_bottom_right_x = rect_bottom_right_x * bin_size_factor + top_left_x;
