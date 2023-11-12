@@ -2,7 +2,7 @@
 
 Para rodar o projeto, em um terminal linux, rode os seguintes comandos: 
 
-*g++ -std=c++11 main.cpp -o main.out*
+*g++ -std=c++11 ffdh.cpp main.cpp -o main.out*
 
 e 
 
