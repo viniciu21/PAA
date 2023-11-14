@@ -51,7 +51,7 @@ vect load_rects(int instance_number)
 
     vect rectangles;
 
-    string file_chosed_path = "./Instances/cleaned/" + FOLDER_PATH_BASE + to_string(instance_number) + ".txt";
+    string file_chosed_path = "./Instances/1dcleaned/" + FOLDER_PATH_BASE + to_string(instance_number) + ".txt";
     fstream file_chosen;
 
     file_chosen.open(file_chosed_path);
@@ -60,10 +60,10 @@ vect load_rects(int instance_number)
 
     for (i = 0; i < number_rect; i++)
     {
-        file_chosen >> width_rect >> height_rect;
+        file_chosen >> height_rect;
 
         Rectangle rectangle;
-        rectangle.width = width_rect;
+        rectangle.width = 1;
         rectangle.height = height_rect;
         rectangle.id = i + 1;
         rectangles.push_back(rectangle);
@@ -228,5 +228,6 @@ void output_to_draw_grapher(vector<Bin> bins) {
 
 int solve(const vect & rectangles){
     vector<Bin> bins_created = fit_into_bins(rectangles);
+    cout << bins_created.size() << endl;
     return bins_created.size();
 }
