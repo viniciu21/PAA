@@ -101,24 +101,36 @@ int ffdh_heuristic() {
 }   
 
 int main() {
-    cin >> qnt_input;
+    // cin >> qnt_input;
     
     vect rectangles;
 
-    for (int i = 0; i < qnt_input; ++i) {
-        double value;
-        cin >> value;
-        values.push_back(value);
-        Rectangle rectangle;
-        rectangle.width = BIN_SIZE;
-        rectangle.height = value;
-        rectangle.id = 1;
-        rectangles.push_back(rectangle);
-    }
+    // for (int i = 0; i < qnt_input; ++i) {
+    //     double value;
+    //     cin >> value;
+    //     values.push_back(value);
+    //     Rectangle rectangle;
+    //     rectangle.width = BIN_SIZE;
+    //     rectangle.height = value;
+    //     rectangle.id = 1;
+    //     rectangles.push_back(rectangle);
+    // }
+    for (size_t i = 1; i <= 500; i++)
+    {
+        rectangles = load_rects(i);
+        auto start = high_resolution_clock::now();
+    
+        sup_limit = solve(rectangles);
+        inf_limit = get_inf_limit();
+        auto qnt_bins = branch_and_bound();
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start);
 
-    sup_limit = solve(rectangles);
-    inf_limit = get_inf_limit();
-    auto qnt_bins = branch_and_bound();
-    cout << qnt_bins << endl;
+        ofstream textfile("numberofbins.txt", ios::app);
+        textfile << to_string(i) << " " << to_string(rectangles.size()) << " " << to_string(qnt_bins) << " " << to_string(duration.count()) << "\n";
+        textfile.close();
+    }
+    
+    
     return 0;
 }
