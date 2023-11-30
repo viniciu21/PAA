@@ -1,5 +1,13 @@
 ## Funcionamento
 
+### Gerador de instâncias
+
+Para gerar um conjunto de retângulos com valores aleatórios, execute o script `instance_generator.py` através do comando:
+
+*python instance_generator.py* ou *python3 instance_generator.py*.
+
+Esse comando vai gerar um arquivo `instance.txt` que poderá ser utilizado como entrada para os algoritmos desenvolvidos neste trabalho.
+
 ### Heuristica (FFDH)
 
 Para testar a heuristica, execute no terminal:
