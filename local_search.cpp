@@ -61,18 +61,16 @@ vector<Bin> local_search(const vector<double> & items) {
     bool can_improve = true;
 
     while (can_improve) {
-        // cout << "Can improve more...\n";
         solution = best_solution;
 
-        for (int i = 0; i < items.size() - 1; ++i) {
-            vector<Bin> bins = swap_and_generate_bins(i, i+1, solution);
-            // cout << "Nhood: " << bins.size() << endl;
-            if (bins.size() < best_solution.size()) {
-                // cout << "Nice!\n";
-                best_solution = bins;
-            }
-        }
+        for (int i = 0; i < items.size(); ++i) {
+            int i_other_item = rand() % items.size();
 
+            vector<Bin> bins = swap_and_generate_bins(i, i_other_item, solution);
+            
+            if (bins.size() < best_solution.size())
+                best_solution = bins;
+        }
         can_improve = solution.size() > best_solution.size();
     }
 
@@ -80,6 +78,8 @@ vector<Bin> local_search(const vector<double> & items) {
 }
 
 int main() {
+    srand(time(0)); 
+
     int qnt_items;
     cin >> qnt_items;
     

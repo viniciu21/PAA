@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include "ffdh.h"
+#include <cstdlib> 
+#include <time.h> 
 
 using namespace std;
 
