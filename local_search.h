@@ -6,6 +6,6 @@
 
 using namespace std;
 
-int local_search(const vector<double> & itens);
+vector<Bin> local_search(const vector<double> & items);
 
 #endif // LOCAL_SEARCH_H
