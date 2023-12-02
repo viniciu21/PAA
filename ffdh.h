@@ -48,6 +48,6 @@ bool add_rect_into_bin(Rectangle &rect, vector<Bin> &bins);
 vector<Bin> fit_into_bins(const vect & rectangles);
 void show_result(vector<Bin> bins);
 void output_to_draw_grapher(vector<Bin> bins);
-int solve(const vect & rectangles);
+vector<Bin> first_fit_decreasing_height(const vect & rectangles);
 
 #endif

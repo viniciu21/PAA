@@ -226,8 +226,7 @@ void output_to_draw_grapher(vector<Bin> bins) {
     cout<<'\n';
 }
 
-int solve(const vect & rectangles){
+vector<Bin> first_fit_decreasing_height(const vect & rectangles){
     vector<Bin> bins_created = fit_into_bins(rectangles);
-    cout << bins_created.size() << endl;
-    return bins_created.size();
+    return bins_created;
 }
