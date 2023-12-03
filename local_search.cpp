@@ -77,19 +77,19 @@ vector<Bin> local_search(const vector<double> & items) {
     return solution;
 }
 
-int main() {
-    srand(time(0)); 
+// int main() {
+//     srand(time(0)); 
 
-    int qnt_items;
-    cin >> qnt_items;
+//     int qnt_items;
+//     cin >> qnt_items;
     
-    vector<double> items;
-    for(int i = 0; i < qnt_items; ++i) {
-        double item;
-        cin >> item;
-        items.push_back(item);
-    }
+//     vector<double> items;
+//     for(int i = 0; i < qnt_items; ++i) {
+//         double item;
+//         cin >> item;
+//         items.push_back(item);
+//     }
 
-    cout << local_search(items).size() << '\n';
-    return 0;
-}
+//     cout << local_search(items).size() << '\n';
+//     return 0;
+// }
