@@ -18,10 +18,10 @@ In order to execute a test in any of those algorithm, please execute:
 
 It will ask the number of the instance of dataset called `hard28` that can be find at `Instances/hard28`.
 
-### Exacts (:warning: in construction)
+### Exacts (⚠️ in construction)
 
 - All Permutations (tooo slow)
-- Branch and bound (BB) (:warning: with bug)
+- Branch and bound (BB) (⚠️ with bug)
 
 In order to execute BB algorithm, execute:
 
