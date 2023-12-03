@@ -6,7 +6,7 @@
 #include <map>
 #include <set>
 #include <stack>
-#include "ffdh.h"
+#include "../heuristics/ffdh.h"
 
 using namespace std;
 

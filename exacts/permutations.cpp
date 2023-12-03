@@ -21,7 +21,7 @@ vector<double> load_rects(int instance_number)
 
     vector<double> valuesH;
 
-    string file_chosed_path = "./Instances/1dcleaned/" + FOLDER_PATH_BASE + to_string(instance_number) + ".txt";
+    string file_chosed_path = "../Instances/1dcleaned/" + FOLDER_PATH_BASE + to_string(instance_number) + ".txt";
     cout <<  FOLDER_PATH_BASE + to_string(instance_number) << endl;
     fstream file_chosen;
 

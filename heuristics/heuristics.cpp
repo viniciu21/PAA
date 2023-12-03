@@ -8,7 +8,7 @@ using namespace std;
 vector<double> get_items_from_instance(int instance_number) {
     vector<double> items;
 
-    string file_chosed_path = "./Instances/1dcleaned/JSON_" + to_string(instance_number) + ".txt";
+    string file_chosed_path = "../Instances/hard28/bpp" + to_string(instance_number);
     fstream file_chosen;
 
     file_chosen.open(file_chosed_path);
@@ -27,7 +27,7 @@ vector<double> get_items_from_instance(int instance_number) {
 }
 
 int main() {
-    cout << "Number of instance? ";
+    cout << "Number of instance (hard28)? ";
     int instance_number;
     cin >> instance_number;
 
