@@ -16,8 +16,7 @@ bool find_in_tabu_list(const pair<int,int> mov, const list<pair<int, int>> & tab
     return false;
 }
 vector<Bin> tabu_search(const vector<double> & items) {
-    vect rectangles = rectangles_from_items(items); 
-    vector<Bin> solution = first_fit_decreasing_height(rectangles);
+    vector<Bin> solution = next_fit_decreasing_height(items);
     vector<Bin> best_solution = solution;
 
     bool can_improve = true;
@@ -47,19 +46,4 @@ vector<Bin> tabu_search(const vector<double> & items) {
     }
 
     return solution;
-}
-
-int main() {
-    int qnt_items;
-    cin >> qnt_items;
-    
-    vector<double> items;
-    for(int i = 0; i < qnt_items; ++i) {
-        double item;
-        cin >> item;
-        items.push_back(item);
-    }
-
-    cout << tabu_search(items).size() << '\n';
-    return 0;
 }

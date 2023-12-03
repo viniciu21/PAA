@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "local_search.h"
+#include "next_fit_decreasing_height.h"
 #include <list>
 
 using namespace std;
