@@ -15,6 +15,7 @@ bool find_in_tabu_list(const pair<int,int> mov, const list<pair<int, int>> & tab
 
     return false;
 }
+
 vector<Bin> tabu_search(const vector<double> & items) {
     vector<Bin> solution = next_fit_decreasing_height(items);
     vector<Bin> best_solution = solution;
@@ -38,7 +39,6 @@ vector<Bin> tabu_search(const vector<double> & items) {
             vector<Bin> bins = swap_and_generate_bins(i, i_other_item, solution);
             
             if (bins.size() < best_solution.size()) {
-                cout << "wow\n";
                 best_solution = bins;
             }
         }
