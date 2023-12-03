@@ -24,6 +24,12 @@ struct Rectangle
     float ending_point;
     float starting_point_height;
     int id;
+
+    Rectangle(){}
+    Rectangle(float w, float h, float start, float end, float start_height, int i)
+        : width(w), height(h), staring_point(start), ending_point(end),
+        starting_point_height(start_height), id(i) {
+    }
 };
 
 struct Bin
@@ -35,6 +41,12 @@ struct Bin
     float current_width_empty;
     int id;
     vect rect_inside;
+
+    Bin() {}
+    Bin(float w, float h, float cw_fitted, float ch_fitted, float cw_empty, int i) 
+        : width(w), height(h), current_width_fited(cw_fitted), current_height_fited(ch_fitted), 
+        current_width_empty(cw_empty), id(i), rect_inside({}) {
+    }
 };
 
 void draw_rect(int width, int height);
@@ -48,6 +60,6 @@ bool add_rect_into_bin(Rectangle &rect, vector<Bin> &bins);
 vector<Bin> fit_into_bins(const vect & rectangles);
 void show_result(vector<Bin> bins);
 void output_to_draw_grapher(vector<Bin> bins);
-int solve(const vect & rectangles);
+vector<Bin> first_fit_decreasing_height(const vect & rectangles);
 
 #endif

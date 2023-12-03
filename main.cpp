@@ -21,7 +21,7 @@ int main(){
 
     vect rectangles = load_rects(instance_number);
     //vect rectangles = load_rects();
-    auto qnt_bins = solve(rectangles);
+    auto qnt_bins = first_fit_decreasing_height(rectangles).size();
     // printRetangles(rectangles);
 
     auto stop = high_resolution_clock::now();

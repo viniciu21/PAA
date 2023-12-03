@@ -120,7 +120,7 @@ int main() {
         rectangles = load_rects(i);
         auto start = high_resolution_clock::now();
     
-        sup_limit = solve(rectangles);
+        sup_limit = first_fit_decreasing_height(rectangles).size();
         inf_limit = get_inf_limit();
         auto qnt_bins = branch_and_bound();
         auto stop = high_resolution_clock::now();
