@@ -6,17 +6,25 @@ The bin packing problem falls under the category of NP-hard problems, meaning th
 
 ### Heuristics
 
+First, execute: `cd heuristics`.
+
 - Next Fit Decreasing Height (NFDH)
+    1. `g++ ffdh.cpp next_fit_decreasing_height.cpp exe_nfdh.cpp -o main.out`
 - Local search algorithm
+    1. `g++ next_fit_decreasing_height.cpp local_search.cpp exe_local_search.cpp -o main.out`
 - Tabu search algorithm
+    1. `g++ next_fit_decreasing_height.cpp local_search.cpp tabu_search.cpp exe_tabu.cpp -o main.out`
 
-In order to execute a test in any of those algorithm, please execute:
+In order to execute a unique test, please execute: 
 
-1. `cd heuristics`
-2. `g++ ffdh.cpp local_search.cpp next_fit_decreasing_height.cpp tabu_search.cpp heuristics.cpp -o main.out`
-3. `./main.out`
+`./main.out` or `./main.out < Instance/hard28/bpp13` (or bpp-any-that-you-want)
 
-It will ask the number of the instance of dataset called `hard28` that can be find at `Instances/hard28`.
+In order to execute a test in any of those algorithm with a single compilation command, please execute:
+
+1. `g++ ffdh.cpp local_search.cpp next_fit_decreasing_height.cpp tabu_search.cpp heuristics.cpp -o main.out`
+1. `./main.out`
+
+It will ask the number of the instance of dataset called `hard28` that can be find at `Instances/hard28`. Beside, choose the heuristic algorithm to be executed.
 
 ### Exacts (⚠️ in construction)
 
