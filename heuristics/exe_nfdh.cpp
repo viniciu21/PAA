@@ -15,6 +15,12 @@ int main() {
         items.push_back(item_value);
     }
 
-    cout << next_fit_decreasing_height(items).size() << endl;
+    auto start = high_resolution_clock::now();
+
+    auto bins = next_fit_decreasing_height(items);
+
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    cout << bins.size() << ' ' << duration.count() << endl;
     return 0;
 }

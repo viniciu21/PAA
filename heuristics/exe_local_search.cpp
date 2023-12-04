@@ -15,6 +15,13 @@ int main() {
         items.push_back(item_value);
     }
 
-    cout << local_search(items).size() << endl;
+
+    auto start = high_resolution_clock::now();
+
+    auto bins = local_search(items);
+
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    cout << bins.size() << ' ' << duration.count() << endl;
     return 0;
 }
